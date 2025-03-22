@@ -3,7 +3,6 @@ package antidimon.web.foodapp.services;
 import antidimon.web.foodapp.models.entities.MyUser;
 import antidimon.web.foodapp.models.entities.UserNorm;
 import antidimon.web.foodapp.repositories.MyUserRepository;
-import antidimon.web.foodapp.repositories.UserNormRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +41,10 @@ public class UserNormService {
 
     @Transactional
     public void calculateNorms(MyUser user) throws IllegalArgumentException {
+
+        if (user.getStatus() == null) {
+            throw new IllegalStateException("User status cannot be null");
+        }
 
         switch (user.getStatus()){
             case WEIGHT_LOSS -> {

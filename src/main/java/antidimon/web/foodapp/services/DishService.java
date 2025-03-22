@@ -96,7 +96,7 @@ public class DishService {
         return dishMapper.toOutputDTO(dish);
     }
 
-    private void checkCaloriesByPFC(BigDecimal inputCalories, BigDecimal protein, BigDecimal fat, BigDecimal carbs)
+    void checkCaloriesByPFC(BigDecimal inputCalories, BigDecimal protein, BigDecimal fat, BigDecimal carbs)
             throws IllegalArgumentException {
 
         BigDecimal calories = protein.multiply(UserNormService.caloriesInProtein)
@@ -104,7 +104,7 @@ public class DishService {
                 .add(carbs.multiply(UserNormService.caloriesInCarb));
 
         BigDecimal diff = inputCalories.subtract(calories);
-        if (diff.compareTo(BigDecimal.ZERO) < 0 || diff.compareTo(BigDecimal.ONE) > 0)
+        if (diff.compareTo(BigDecimal.ONE.multiply(BigDecimal.valueOf(-1))) < 0 || diff.compareTo(BigDecimal.TEN) > 0)
             throw new IllegalArgumentException("The amount of calories does not match the amount of PFC");
 
     }

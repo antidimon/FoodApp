@@ -4,6 +4,7 @@ package antidimon.web.foodapp.controllers;
 import antidimon.web.foodapp.models.dto.stat.DayTotalFoodStats;
 import antidimon.web.foodapp.models.dto.stat.FoodStatInputDTO;
 import antidimon.web.foodapp.models.dto.stat.FoodStatOutputDTO;
+import antidimon.web.foodapp.models.dto.stat.HistoryDayTotalFoodStats;
 import antidimon.web.foodapp.services.FoodStatsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Контроллер статистики", description = "Работа с0 сбором/выдачей статистики")
@@ -26,10 +28,10 @@ public class FoodStatController {
 
     @Operation
     @GetMapping
-    public ResponseEntity<List<FoodStatOutputDTO>> getStats(@RequestParam(name = "userId", required = false) Long userId) {
-        List<FoodStatOutputDTO> stats;
-        if (userId != null) stats = foodStatsService.getUserStatsDTO(userId);
-        else stats = foodStatsService.getStatsDTO();
+    public ResponseEntity<List<?>> getStats(@RequestParam(name = "userId", required = false) Long userId) {
+        List<?> stats;
+        if (userId != null) stats = foodStatsService.getUserAllStatsWithoutIDDTO(userId);
+        else stats = foodStatsService.getAllStatsDTO();
         return ResponseEntity.ok(stats);
     }
 
@@ -58,7 +60,7 @@ public class FoodStatController {
     @Operation
     @GetMapping("/today")
     public ResponseEntity<List<DayTotalFoodStats>> getTodayStats() {
-        List<DayTotalFoodStats> stats = foodStatsService.getTodayTotalStats();
+        List<DayTotalFoodStats> stats = foodStatsService.getAllTodayTotalStats();
         return ResponseEntity.ok(stats);
     }
 
@@ -67,6 +69,13 @@ public class FoodStatController {
     public ResponseEntity<DayTotalFoodStats> getUserTodayStat(@PathVariable(name = "userId") long userId){
         var stat = foodStatsService.getTodayTotalUserStat(userId);
         return ResponseEntity.ok(stat);
+    }
+
+    @Operation
+    @GetMapping("/days/{userId}")
+    public ResponseEntity<List<HistoryDayTotalFoodStats>> getUserDaysStats(@PathVariable(name = "userId") long userId){
+        var stats = foodStatsService.getUserHistoryTotalStats(userId);
+        return ResponseEntity.ok(stats);
     }
 
 }

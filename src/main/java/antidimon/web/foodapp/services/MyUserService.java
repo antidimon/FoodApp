@@ -5,9 +5,7 @@ import antidimon.web.foodapp.models.dto.user.MyUserEditDTO;
 import antidimon.web.foodapp.models.dto.user.MyUserInputDTO;
 import antidimon.web.foodapp.models.dto.user.MyUserOutputDTO;
 import antidimon.web.foodapp.models.entities.MyUser;
-import antidimon.web.foodapp.models.entities.TargetStatus;
 import antidimon.web.foodapp.repositories.MyUserRepository;
-import antidimon.web.foodapp.utils.validators.UniqueEmailValidator;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
