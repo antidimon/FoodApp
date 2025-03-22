@@ -1,0 +1,46 @@
+version: '3.8'
+
+networks:
+  spring-postgres:
+    driver: bridge
+
+services:
+
+  back:
+    env_file:
+      - .env
+    container_name: back
+    image: back:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    networks:
+      - spring-postgres
+
+
+
+  postgres:
+    env_file:
+      - .env
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    volumes:
+      - ./db:/var/lib/postgresql
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - spring-postgres
