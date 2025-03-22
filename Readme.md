@@ -35,3 +35,9 @@ API для слежения за КБЖУ.
    ```
    docker-compose up --build -d
    ```
+3. Swagger запустится по этим url
+
+   ```
+   http://localhost:8080/swagger-ui.html
+   http://localhost:8080/swagger-ui/index.html
+   ```
